@@ -11,23 +11,7 @@ variable "resource_group_name" {
   default     = "myresourcegroup"
 }
 
-////firewall////
 
-variable "firewall_name" {
-  type    = string
-}
-variable "firewall_subnet" {
-  type    = string
-}
-variable "firewall_ip" {
-  type    = string
-}
-variable "firewall_sku_name" {
-  type    = string
-}
-variable "firewall_network_rule" {
-  type    = string
-}
 ////gw////
 variable "ag_name" {
   type = string

@@ -1,18 +1,12 @@
-////bastion////
-variable "bastionsubnetname" {
-   type = string
+////virtual_network_interface-jumbox////
+
+variable "Jumpboxname" {
+  type    = string
+
 }
-variable "bastionhostname" {
-  type = string
-}
-variable "bastion_ip" {
-  type = string
-}
-variable "bastion_address_prefixes" {
+variable "jumpbox_subnet" {
   type = list(string)
 }
-
-
 
 ////general properties ////
 
@@ -26,8 +20,6 @@ variable "resource_group_name" {
   type        = string
   default     = "myresourcegroup"
 }
-
-
 //// virtual network type ////// 
 variable "virtual_network_name"{
   type = string
