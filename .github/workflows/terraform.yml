@@ -1,0 +1,31 @@
+name: Terraform CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1 # Using v1 tag for compatibility
+        with:
+          terraform_version: 1.9.8 # Matching the local Terraform version you’re using
+
+      - name: Initialize Terraform
+        run: |
+          terraform init -input=false
+          echo "Terraform initialization completed successfully."
+        working-directory: ./Hub # Specify the directory containing your Terraform code
+
+      - name: Validate Terraform
+        run: |
+          terraform validate
+          echo "Terraform validation completed successfully."
+        working-directory: ./Hub # Specify the directory containing your Terraform code
