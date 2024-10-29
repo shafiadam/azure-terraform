@@ -206,8 +206,4 @@ variable "custom_route_name" {
 
 }
 
-//////for service based authentication////
-variable "client_id" {}
-variable "client_secret" {}
-variable "tenant_id" {}
-variable "subscription_id" {}
+
