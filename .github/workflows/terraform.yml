@@ -14,18 +14,38 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1 # Using v1 tag for compatibility
+        uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.9.8 # Matching the local Terraform version you’re using
+          terraform_version: 1.9.8
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Initialize Terraform
         run: |
           terraform init -input=false
           echo "Terraform initialization completed successfully."
-        working-directory: ./Hub # Specify the directory containing your Terraform code
+        working-directory: ./Hub
 
       - name: Validate Terraform
         run: |
           terraform validate
           echo "Terraform validation completed successfully."
-        working-directory: ./Hub # Specify the directory containing your Terraform code
+        working-directory: ./Hub
+
+      - name: Plan Terraform
+        run: |
+          terraform plan -out=tfplan
+          echo "Terraform plan created successfully."
+        working-directory: ./Hub
+
+      - name: Apply Terraform
+        if: success()
+        run: |
+          terraform apply -auto-approve tfplan
+          echo "Terraform apply completed successfully."
+        working-directory: ./Hub
