@@ -27,21 +27,22 @@ jobs:
       - name: Set Azure Environment Variables
         run: |
           echo "Setting Azure environment variables"
-          
-          # Capture the multi-line JSON secret into a variable
-          AZURE_CREDENTIALS_JSON="${{ secrets.AZURE_CREDENTIALS }}"
-          
-          # Use echo with jq to parse each field from the multi-line JSON string
-          export AZURE_CLIENT_ID=$(echo "$AZURE_CREDENTIALS_JSON" | jq -r '.clientId') || exit 1
-          export AZURE_CLIENT_SECRET=$(echo "$AZURE_CREDENTIALS_JSON" | jq -r '.clientSecret') || exit 1
-          export AZURE_TENANT_ID=$(echo "$AZURE_CREDENTIALS_JSON" | jq -r '.tenantId') || exit 1
-          export AZURE_SUBSCRIPTION_ID=$(echo "$AZURE_CREDENTIALS_JSON" | jq -r '.subscriptionId') || exit 1
 
-          # Add variables to GitHub Actions environment
+          # Store the JSON string in an environment variable
+          AZURE_CREDENTIALS_JSON="${{ secrets.AZURE_CREDENTIALS }}"
+
+          # Parse and export each variable directly from the JSON string using jq
+          export AZURE_CLIENT_ID=$(echo "$AZURE_CREDENTIALS_JSON" | jq -r '.clientId')
+          export AZURE_CLIENT_SECRET=$(echo "$AZURE_CREDENTIALS_JSON" | jq -r '.clientSecret')
+          export AZURE_TENANT_ID=$(echo "$AZURE_CREDENTIALS_JSON" | jq -r '.tenantId')
+          export AZURE_SUBSCRIPTION_ID=$(echo "$AZURE_CREDENTIALS_JSON" | jq -r '.subscriptionId')
+
+          # Set variables in GitHub Actions environment
           echo "AZURE_CLIENT_ID=$AZURE_CLIENT_ID" >> $GITHUB_ENV
           echo "AZURE_CLIENT_SECRET=$AZURE_CLIENT_SECRET" >> $GITHUB_ENV
           echo "AZURE_TENANT_ID=$AZURE_TENANT_ID" >> $GITHUB_ENV
           echo "AZURE_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID" >> $GITHUB_ENV
+        shell: bash
 
       # Step to check for required environment variables
       - name: Check Required Environment Variables
