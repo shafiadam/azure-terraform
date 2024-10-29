@@ -23,21 +23,21 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Step to set Azure Environment Variables directly from individual secrets
-      - name: Set Azure Environment Variables
+      # Step to set Terraform Variable Environment Variables
+      - name: Set Terraform Variable Environment Variables
         run: |
-          echo "Setting Azure environment variables"
+          echo "Setting Terraform environment variables for Azure credentials"
 
-          # Set each variable directly using the individual secrets
-          echo "AZURE_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
-          echo "AZURE_CLIENT_SECRET=${{ secrets.AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
-          echo "AZURE_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
-          echo "AZURE_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+          # Set each variable using the TF_VAR_ prefix to match the variables in your Terraform code
+          echo "TF_VAR_client_id=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "TF_VAR_tenant_id=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
 
       # Step to check for required environment variables
       - name: Check Required Environment Variables
         run: |
-          if [ -z "$AZURE_CLIENT_ID" ] || [ -z "$AZURE_CLIENT_SECRET" ] || [ -z "$AZURE_TENANT_ID" ] || [ -z "$AZURE_SUBSCRIPTION_ID" ]; then
+          if [ -z "$TF_VAR_client_id" ] || [ -z "$TF_VAR_client_secret" ] || [ -z "$TF_VAR_tenant_id" ] || [ -z "$TF_VAR_subscription_id" ]; then
             echo "One or more required environment variables are missing."
             exit 1
           fi
