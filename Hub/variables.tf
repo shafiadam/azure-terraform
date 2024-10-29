@@ -155,7 +155,6 @@ variable "firewall_network_rule" {
   type = string
 }
 
-
 ///////bastion/////
 variable "bastionsubnetname" {
   type = string
