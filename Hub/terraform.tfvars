@@ -1,7 +1,7 @@
 ////////////////////Resource Group////////////////////
 
 resource_group_name = "rg-network-main-eastus"
-location            = "eastus"
+location            = "eastus 2"
 
 ////////////////Recovery Services Vault////////////////
 
