@@ -23,6 +23,16 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      # Step to check for required environment variables
+      - name: Check Required Environment Variables
+        run: |
+          if [ -z "$AZURE_CLIENT_ID" ] || [ -z "$AZURE_CLIENT_SECRET" ] || [ -z "$AZURE_TENANT_ID" ] || [ -z "$AZURE_SUBSCRIPTION_ID" ]; then
+            echo "One or more required environment variables are missing."
+            exit 1
+          fi
+          echo "All required environment variables are set."
+
+      # Step to set Azure Environment Variables
       - name: Set Azure Environment Variables
         run: |
           echo "Setting Azure environment variables"
@@ -43,10 +53,24 @@ jobs:
           echo "Terraform validation completed successfully."
         working-directory: ./Hub
 
+      # Increase logging level and set a timeout for the Plan step
       - name: Plan Terraform
+        timeout-minutes: 15  # Timeout to prevent indefinite hanging
+        env:
+          TF_LOG: DEBUG  # Enable detailed logging
         run: |
           terraform plan -out=tfplan
           echo "Terraform plan created successfully."
+        working-directory: ./Hub
+
+      # Step to check if tfstate file exists (assuming it's in the default location)
+      - name: Verify terraform.tfstate Access
+        run: |
+          if [ ! -f "./Hub/terraform.tfstate" ]; then
+            echo "Warning: terraform.tfstate file not found. Ensure backend is configured correctly."
+          else
+            echo "terraform.tfstate file exists."
+          fi
         working-directory: ./Hub
 
       - name: Apply Terraform
