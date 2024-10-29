@@ -29,11 +29,11 @@ variable "recovery_service_vault_name" {
 
 
 
-variable "tenant_id" {
-  type    = string
-  default = ""
+# variable "tenant_id" {
+#   type    = string
+#   default = ""
 
- }
+#  }
 
 ///////////////storage-account///////////
 
@@ -206,4 +206,8 @@ variable "custom_route_name" {
 
 }
 
-
+//////for service principal based authentication////
+variable "client_id" {}
+variable "client_secret" {}
+variable "tenant_id" {}
+variable "subscription_id" {}

@@ -7,7 +7,7 @@ recovery_service_vault_name = "recovery-vault-hub"
 
 ////////////////////Key Vault//////////////////////////
 key_vault_name = "kv-hub-prod-01"
-tenant_id      = "5a9720f4-6b29-484c-9c08-17236e613f4d"
+# tenant_id      = "5a9720f4-6b29-484c-9c08-17236e613f4d"
 
 ////////////////////Log Analytics Workspace////////////
 workspace_name = "log-analytics-hub"
